@@ -1,6 +1,6 @@
-# Uncertainty-Based Offline Reinforcement Learning with Diversified Q-ensemble
+# Uncertainty-Based Offline Reinforcement Learning with Diversified Q-Ensemble
 
-This is the code for reproducing the results of the paper "Uncertainty-Based Offline Reinforcement Learning with Diversified Q-ensemble" submitted to NeurIPS'2021. This code builds up from the offical code of [Reset-Free Lifelong Learning with Skill-Space Planning](https://sites.google.com/berkeley.edu/reset-free-lifelong-learning), originally derived from [rlkit](https://github.com/vitchyr/rlkit). 
+This is the code for reproducing the results of the paper "Uncertainty-Based Offline Reinforcement Learning with Diversified Q-Ensemble" submitted to NeurIPS'2021. This code builds up from the offical code of [Reset-Free Lifelong Learning with Skill-Space Planning](https://sites.google.com/berkeley.edu/reset-free-lifelong-learning), originally derived from [rlkit](https://github.com/vitchyr/rlkit). 
 ## Requirements
 
 * python (3.7.4)

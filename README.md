@@ -23,19 +23,19 @@ To be updated
 To reproduce SAC-N results in MuJoCo Gym, run:
 
 ```bash
-python run_scripts/sac.py --env_name [ENVIRONMENT] --num_qs [N]
+python scripts/sac.py --env_name [ENVIRONMENT] --num_qs [N]
 ```
 
 To reproduce EDAC results in MuJoCo Gym, run:
 
 ```bash
-python run_scripts/sac.py --env_name [ENVIRONMENT] --num_qs [N] --eta [ETA]
+python scripts/sac.py --env_name [ENVIRONMENT] --num_qs [N] --eta [ETA]
 ```
 
 On Adroit tasks, we apply reward normalization for further training stability. For example, to reproduce the EDAC results for pen-human, run:
 
 ```bash
-python run_scripts/sac.py --env_name pen-human-v1 --num_qs 20 --plr 3e-5 --eta 1000 --reward_mean --reward_std 1.0
+python scripts/sac.py --env_name pen-human-v1 --num_qs 20 --plr 3e-5 --eta 1000 --reward_mean --reward_std
 ```
 
 ## Citing this Work

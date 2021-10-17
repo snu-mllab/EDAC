@@ -306,13 +306,10 @@ class ParallelizedEnsembleFlattenMLP(nn.Module):
     def __init__(
             self,
             ensemble_size,
-            sample_size,
             hidden_sizes,
             input_size,
             output_size,
             init_w=3e-3,
-            hidden_activation=F.relu,
-            output_activation=identity,
             hidden_init=ptu.fanin_init,
             w_scale=1,
             b_init_value=0.1,
@@ -323,15 +320,14 @@ class ParallelizedEnsembleFlattenMLP(nn.Module):
         super().__init__()
 
         self.ensemble_size = ensemble_size
-        self.sample_size = sample_size
         self.input_size = input_size
         self.output_size = output_size
         self.elites = [i for i in range(self.ensemble_size)]
 
         self.sampler = np.random.default_rng()
 
-        self.hidden_activation = hidden_activation
-        self.output_activation = output_activation
+        self.hidden_activation = F.relu
+        self.output_activation = identity
         
         self.layer_norm = layer_norm
 
@@ -367,11 +363,10 @@ class ParallelizedEnsembleFlattenMLP(nn.Module):
                 ptu.orthogonal_init(self.last_fc.W[j], final_init_scale)
                 self.last_fc.b[j].data.fill_(0)
 
-    def forward(self, *inputs, noise_size=-1.0, **kwargs):
+    def forward(self, *inputs, **kwargs):
         flat_inputs = torch.cat(inputs, dim=-1)
 
         state_dim = inputs[0].shape[-1]
-        action_dim = inputs[1].shape[-1]
         
         dim=len(flat_inputs.shape)
         # repeat h to make amenable to parallelization
@@ -382,11 +377,6 @@ class ParallelizedEnsembleFlattenMLP(nn.Module):
             if dim == 1:
                 flat_inputs = flat_inputs.unsqueeze(0)
             flat_inputs = flat_inputs.repeat(self.ensemble_size, 1, 1)
-
-        if noise_size > 0:
-            noise = (torch.rand_like(flat_inputs) - 0.5) * 2 * noise_size
-            # Noise to only states
-            flat_inputs[:, :, :state_dim] += noise[:, :, :state_dim]
         
         # input normalization
         h = flat_inputs
@@ -407,28 +397,10 @@ class ParallelizedEnsembleFlattenMLP(nn.Module):
         # output is (ensemble_size, batch_size, output_size)
         return output
 
-    def sample(self, *inputs, reduce='mean', sample_size=None, q_std_penalty=1.0, noise_size=-1.0):
-        preds = self.forward(*inputs, noise_size=noise_size)
-
-        if sample_size is None:
-            sample_size = self.ensemble_size
+    def sample(self, *inputs):
+        preds = self.forward(*inputs)
         
-        indices = self.sampler.choice(self.ensemble_size, sample_size, replace=False)
-
-        sampled_preds = preds[indices, :]
-        
-        if reduce == 'mean':
-            return torch.mean(sampled_preds, dim=0)
-        elif reduce == 'min':
-            return torch.min(sampled_preds, dim=0)[0]
-        elif reduce == 'std':
-            qs_mean = torch.mean(sampled_preds, dim=0)
-            qs_std = torch.std(sampled_preds, dim=0)
-            return qs_mean - q_std_penalty * qs_std
-        elif reduce == 'none':
-            return sampled_preds
-        else:
-            raise NotImplementedError
+        return torch.min(preds, dim=0)[0]
 
     def fit_input_stats(self, data, mask=None):
         raise NotImplementedError

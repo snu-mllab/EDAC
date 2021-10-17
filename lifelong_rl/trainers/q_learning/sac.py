@@ -40,12 +40,10 @@ class SACTrainer(TorchTrainer):
             max_q_backup=False,
             deterministic_backup=False,
             policy_eval_start=0,
-            sigma=-1.0,
+            eta=-1.0,
 
             num_qs=10,
-            num_minqs=2,
             replay_buffer=None,
-            args=None,
     ):
         super().__init__()
 
@@ -54,7 +52,6 @@ class SACTrainer(TorchTrainer):
         self.qfs = qfs
         self.target_qfs = target_qfs
         self.num_qs = num_qs
-        self.num_minqs = num_minqs
 
         self.discount = discount
         self.reward_scale = reward_scale
@@ -63,10 +60,9 @@ class SACTrainer(TorchTrainer):
 
         self.max_q_backup = max_q_backup
         self.deterministic_backup = deterministic_backup
-        self.sigma = sigma
+        self.eta = eta
 
         self.replay_buffer = replay_buffer
-        self.args = args
 
         self.use_automatic_entropy_tuning = use_automatic_entropy_tuning
         if self.use_automatic_entropy_tuning:
@@ -96,42 +92,6 @@ class SACTrainer(TorchTrainer):
         self.eval_statistics = OrderedDict()
         self._need_to_update_eval_statistics = True
         self.policy_eval_start = policy_eval_start
-
-    def single_qfs_stats(self, qs_pred):
-        # return mean, std, min values of Q-function values
-        return dict(
-            mean=np.mean(qs_pred, axis=0),
-            std=np.std(qs_pred, axis=0),
-            min=np.amin(qs_pred, axis=0),
-        )
-
-    def full_qfs_stats(self, obs, actions):
-        # return full statistics of Q-functions for behavior, random, max(random) and current policies
-
-        qs_behav = ptu.get_numpy(self.qfs(obs, actions))
-
-        rand_actions = torch.FloatTensor(actions.shape).uniform_(-1, 1).to(
-            ptu.device)
-        qs_rand = ptu.get_numpy(self.qfs(obs, rand_actions))
-
-        curr_actions, *_ = self.policy(obs)
-        qs_curr = ptu.get_numpy(self.qfs(obs, curr_actions))
-
-        qs_behav_stats = self.single_qfs_stats(qs_behav)
-        qs_rand_stats = self.single_qfs_stats(qs_rand)
-        qs_curr_stats = self.single_qfs_stats(qs_curr)
-
-        return dict(
-            behav_mean=qs_behav_stats['mean'],
-            behav_std=qs_behav_stats['std'],
-            behav_min=qs_behav_stats['min'],
-            rand_mean=qs_rand_stats['mean'],
-            rand_std=qs_rand_stats['std'],
-            rand_min=qs_rand_stats['min'],
-            curr_mean=qs_curr_stats['mean'],
-            curr_std=qs_curr_stats['std'],
-            curr_min=qs_curr_stats['min'],
-        )
 
     def _get_tensor_values(self, obs, actions, network=None):
         action_shape = actions.shape[0]
@@ -163,7 +123,7 @@ class SACTrainer(TorchTrainer):
         rewards = batch['rewards']
         terminals = batch['terminals']
         
-        if self.sigma > 0:
+        if self.eta > 0:
             actions.requires_grad_(True)
         
         """
@@ -184,11 +144,7 @@ class SACTrainer(TorchTrainer):
             alpha_loss = 0
             alpha = 1
 
-        q_new_actions = self.qfs.sample(
-                                        obs.detach(),
-                                        new_obs_actions,
-                                        reduce='min',
-                                        sample_size=self.num_minqs)
+        q_new_actions = self.qfs.sample(obs, new_obs_actions)
 
         policy_loss = (alpha * log_pi - q_new_actions).mean()
 
@@ -215,11 +171,7 @@ class SACTrainer(TorchTrainer):
         )
 
         if not self.max_q_backup:
-            target_q_values = self.target_qfs.sample(
-                next_obs,
-                new_next_actions,
-                reduce='min',
-                sample_size=self.num_minqs)
+            target_q_values = self.target_qfs.sample(next_obs, new_next_actions)
             if not self.deterministic_backup:
                 target_q_values -= alpha * new_log_pi
         else:
@@ -237,7 +189,7 @@ class SACTrainer(TorchTrainer):
 
         qfs_loss_total = qfs_loss
         
-        if self.sigma > 0:
+        if self.eta > 0:
             qs_pred_grads = None
             sample_size = min(qs_pred.size(0), actions.size(1))
             indices = np.random.choice(qs_pred.size(0), size=sample_size, replace=False)
@@ -256,7 +208,7 @@ class SACTrainer(TorchTrainer):
             qs_pred_grads = (1 - masks) * qs_pred_grads
             grad_loss = torch.mean(torch.sum(qs_pred_grads, dim=(1, 2))) / (sample_size - 1)
             
-            qfs_loss_total += self.sigma * grad_loss
+            qfs_loss_total += self.eta * grad_loss
 
 
         if self.use_automatic_entropy_tuning and not self.deterministic_backup:
@@ -282,11 +234,9 @@ class SACTrainer(TorchTrainer):
             policy_loss = ptu.get_numpy(log_pi - q_new_actions).mean()
             policy_avg_std = ptu.get_numpy(torch.exp(policy_log_std)).mean()
 
-            qfs_stats = self.full_qfs_stats(obs, actions)
-
             self.eval_statistics['QFs Loss'] = np.mean(
                 ptu.get_numpy(qfs_loss)) / self.num_qs
-            if self.sigma > 0:
+            if self.eta > 0:
                 self.eval_statistics['Q Grad Loss'] = np.mean(
                     ptu.get_numpy(grad_loss))
             self.eval_statistics['Policy Loss'] = np.mean(policy_loss)
@@ -300,54 +250,6 @@ class SACTrainer(TorchTrainer):
                 create_stats_ordered_dict(
                     'Qs Targets',
                     ptu.get_numpy(q_target),
-                ))
-
-            self.eval_statistics.update(
-                create_stats_ordered_dict(
-                    'Qs behavior mean values',
-                    qfs_stats['behav_mean'],
-                ))
-            self.eval_statistics.update(
-                create_stats_ordered_dict(
-                    'Qs behavior std values',
-                    qfs_stats['behav_std'],
-                ))
-            self.eval_statistics.update(
-                create_stats_ordered_dict(
-                    'Qs behavior min values',
-                    qfs_stats['behav_min'],
-                ))
-
-            self.eval_statistics.update(
-                create_stats_ordered_dict(
-                    'Qs random mean values',
-                    qfs_stats['rand_mean'],
-                ))
-            self.eval_statistics.update(
-                create_stats_ordered_dict(
-                    'Qs random std values',
-                    qfs_stats['rand_std'],
-                ))
-            self.eval_statistics.update(
-                create_stats_ordered_dict(
-                    'Qs random min values',
-                    qfs_stats['rand_min'],
-                ))
-
-            self.eval_statistics.update(
-                create_stats_ordered_dict(
-                    'Qs curr mean values',
-                    qfs_stats['curr_mean'],
-                ))
-            self.eval_statistics.update(
-                create_stats_ordered_dict(
-                    'Qs curr std values',
-                    qfs_stats['curr_std'],
-                ))
-            self.eval_statistics.update(
-                create_stats_ordered_dict(
-                    'Qs curr min values',
-                    qfs_stats['curr_min'],
                 ))
 
             self.eval_statistics.update(

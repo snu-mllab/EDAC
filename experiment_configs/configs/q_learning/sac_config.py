@@ -16,42 +16,24 @@ def get_config(
         obs_dim,
         action_dim,
         replay_buffer,
-        args=None,
 ):
     """
     Policy construction
     """
 
     num_qs = variant['trainer_kwargs']['num_qs']
-    num_minqs = variant['trainer_kwargs']['num_minqs']
     M = variant['policy_kwargs']['layer_size']
     num_q_layers = variant['policy_kwargs']['num_q_layers']
     num_p_layers = variant['policy_kwargs']['num_p_layers']
-
-    q_activation = variant['policy_kwargs']['q_activation']
-
-    hidden_activation = None
-    if q_activation == 'relu':
-        hidden_activation = F.relu
-    elif q_activation == 'softplus':
-        hidden_activation = F.softplus
-    elif q_activation == 'silu':
-        hidden_activation = F.silu
-    elif q_activation == 'leaky':
-        hidden_activation = F.leaky_relu
-    else:
-        raise NotImplementedError
 
     qfs, target_qfs = ppp.group_init(
         2,
         ParallelizedEnsembleFlattenMLP,
         ensemble_size=num_qs,
-        sample_size=num_minqs,
         hidden_sizes=[M] * num_q_layers,
         input_size=obs_dim + action_dim,
         output_size=1,
         layer_norm=None,
-        hidden_activation=hidden_activation
     )
 
     policy = TanhGaussianPolicy(
@@ -67,7 +49,6 @@ def get_config(
         qfs=qfs,
         target_qfs=target_qfs,
         replay_buffer=replay_buffer,
-        args=args,
         **variant['trainer_kwargs'],
     )
     """
@@ -85,6 +66,6 @@ def get_config(
             replay_buffer=replay_buffer,
             qfs=qfs,
         ))
-    config['algorithm_kwargs'] = variant['algorithm_kwargs']
+    config['algorithm_kwargs'] = variant.get('algorithm_kwargs', dict())
 
     return config

@@ -7,16 +7,6 @@ import sys
 
 from lifelong_rl.core.logging.logging import logger
 
-from inspect import currentframe, getframeinfo
-
-
-DEBUG_DIR_SEED = 0
-
-
-def debug_msg(crf):
-    frameinfo = getframeinfo(crf)
-    print(frameinfo.filename, frameinfo.lineno)
-
 
 def setup_logger(
         variant=None,
@@ -31,7 +21,6 @@ def setup_logger(
         base_log_dir='results',
         git_infos=None,
         script_name=None,
-        debug=False,
         **create_log_dir_kwargs
 ):
     log_dir = osp.join(base_log_dir, log_dir)
@@ -54,8 +43,6 @@ def setup_logger(
 
     exp_name = log_dir.split("/")[-1]
     logger.push_prefix("[%s] " % exp_name)
-
-    logger.set_debug(debug)
 
     if variant is not None:
         logger.log("Variant:")

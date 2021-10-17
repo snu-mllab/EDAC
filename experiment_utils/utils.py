@@ -31,28 +31,11 @@ def load_json(params_json_path):
     return data
 
 
-def x_pos_add(dataset, obs_with_x):
-    N = dataset['rewards'].shape[0]
-    next_x_pos = dataset['infos/qpos'][:, 0:1]
-    x_pos = np.concatenate([next_x_pos[0:1], next_x_pos[:-1]], axis=0)
-    x_pos_max = x_pos.max()
-    if obs_with_x == 'tc':
-        x_pos = x_pos % int((x_pos_max) // 10)
-    elif obs_with_x == 'noise':
-        x_pos = np.random.uniform(-10, 10, (N, 1))
-
-    dataset['observations'] = np.concatenate([x_pos, dataset['observations']],
-                                             axis=-1)
-    print("X position is added!")
-
-
 def load_dataset(env, terminate_on_end=False, **kwargs):
     '''
     Return offline dataset: Dictionary (np array)
     '''
     dataset = env.get_dataset(**kwargs)
-    if hasattr(env, 'obs_with_x'):
-        x_pos_add(dataset, env.obs_with_x)
 
     use_timeouts = False
     if 'timeouts' in dataset:

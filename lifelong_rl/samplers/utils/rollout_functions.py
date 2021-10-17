@@ -80,9 +80,6 @@ def multitask_rollout(
 def rollout(
         env,
         agent,
-        qfs=None,
-        alpha=None,
-        entropy_penalty=False,
         max_path_length=np.inf,
         render=False,
         render_kwargs=None,
@@ -110,17 +107,7 @@ def rollout(
     agent_infos = []
     env_infos = []
 
-    qfs_flag = hasattr(qfs, 'sample')
-
-    if qfs_flag:
-        q_preds = []
-
-        if entropy_penalty:
-            entropies = []
-
     o = env.reset()
-    if hasattr(env, 'obs_with_x'):
-        o = np.concatenate([env.env.sim.data.qpos[0:1], o], axis=0)
     agent.reset()
     next_o = None
     path_length = 0
@@ -129,25 +116,12 @@ def rollout(
     while path_length < max_path_length:
         a, agent_info = agent.get_action(o)
         next_o, r, d, env_info = env.step(np.clip(a, -1, 1))
-        if hasattr(env, 'obs_with_x'):
-            next_o = np.concatenate([env.env.sim.data.qpos[0:1], next_o],
-                                    axis=0)
         observations.append(o)
         rewards.append(r)
         terminals.append(d)
         actions.append(a)
         agent_infos.append(agent_info)
         env_infos.append(env_info)
-
-        if qfs_flag:
-            o_ch, a_ch = from_numpy(o), from_numpy(a)
-            q_preds.append(get_numpy(qfs.sample(o_ch, a_ch, reduce='min')))
-
-            if entropy_penalty:
-                entropies.append(
-                    get_numpy(
-                        alpha *
-                        agent.stochastic_policy.get_log_probs(o_ch, a_ch)))
 
         path_length += 1
         if d:
@@ -166,12 +140,8 @@ def rollout(
     next_observations = np.vstack(
         (observations[1:, :], np.expand_dims(next_o, 0)))
 
-    if qfs_flag:
-        q_preds = np.array(q_preds)
-        if entropy_penalty:
-            entropies = np.array(entropies)
 
-    ret_dict = dict(
+    return dict(
         observations=observations,
         actions=actions,
         rewards=np.array(rewards).reshape(-1, 1),
@@ -180,14 +150,6 @@ def rollout(
         agent_infos=agent_infos,
         env_infos=env_infos,
     )
-
-    if qfs_flag:
-        ret_dict.update(dict(q_preds=q_preds, ))
-
-    if entropy_penalty:
-        ret_dict.update(dict(entropies=entropies, ))
-
-    return ret_dict
 
 
 def rollout_with_latent(

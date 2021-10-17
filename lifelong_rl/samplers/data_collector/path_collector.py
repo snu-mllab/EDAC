@@ -12,8 +12,6 @@ class MdpPathCollector(PathCollector):
             self,
             env,
             policy,
-            qfs=None,
-            entropy_penalty=False,
             max_num_epoch_paths_saved=None,
             render=False,
             render_kwargs=None,
@@ -23,8 +21,6 @@ class MdpPathCollector(PathCollector):
 
         self._env = env
         self._policy = policy
-        self._qfs = qfs
-        self._entropy_penalty = entropy_penalty
         self._max_num_epoch_paths_saved = max_num_epoch_paths_saved
         self._epoch_paths = deque(maxlen=self._max_num_epoch_paths_saved)
         self._render = render
@@ -68,9 +64,6 @@ class MdpPathCollector(PathCollector):
                 path = self.rollout_function(
                     env=self._env,
                     agent=self._policy,
-                    qfs=self._qfs,
-                    alpha=alpha,
-                    entropy_penalty=self._entropy_penalty,
                     max_path_length=max_path_length_this_loop,
                 )
                 path_len = len(path['actions'])

@@ -7,26 +7,21 @@ def launch_experiment(
 
         # Experiment config
         get_config=None,
-        get_algorithm=None,
         get_offline_algorithm=None,
 
         # Misc arguments
         exp_postfix='',
         use_gpu=True,
         log_to_tensorboard=False,
-        debug=False,
 
         # Missing data
         data_args=None,
-        args=None,
 ):
     # Load experiment config
     experiment_config = dict()
 
     if get_config is not None:
         experiment_config['get_config'] = get_config
-    if get_algorithm is not None:
-        experiment_config['get_algorithm'] = get_algorithm
     if get_offline_algorithm is not None:
         experiment_config['get_offline_algorithm'] = get_offline_algorithm
 
@@ -37,7 +32,5 @@ def launch_experiment(
         exp_postfix=exp_postfix,
         use_gpu=use_gpu,
         log_to_tensorboard=log_to_tensorboard,
-        debug=debug,
         data_args=data_args,
-        args=args,
     )

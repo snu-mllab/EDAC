@@ -102,8 +102,6 @@ class Logger(object):
 
         self._plt_figs = []
 
-        self._debug = False
-
     def reset(self):
         self.__init__()
 
@@ -188,9 +186,6 @@ class Logger(object):
         self._log_to_tensorboard = log_to_tensorboard
         self._writer = SummaryWriter(self.log_dir)
 
-    def set_debug(self, debug):
-        self._debug = debug
-        
     def log(self, s, with_prefix=False, with_timestamp=True):
         out = s
         if with_prefix:

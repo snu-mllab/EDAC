@@ -18,59 +18,30 @@ def load_hdf5(env, replay_buffer, args):
 
     normalize_mean = True if args.get('reward_mean') else False
 
-    bias = args.get('reward_add', -1e5)
-    add_bias = bias > -1e3
-
-    std_scaler = args.get('reward_std', -1)
-    normalize_std = True if std_scaler > 0 else False
-
-    scaler = args.get('reward_scale', -1)
-    mult_scale = scaler > 0
-
-    reward_pen = args.get('reward_pen', False)
+    normalize_std = True if args.get('reward_std') else False
 
     print("\nRewards stats before preprocessing")
-    print('mean:', rewards.mean())
-    print('std:', rewards.std())
-    print('max:', rewards.max())
-    print('min:', rewards.min())
+    print('mean: {:.4f}'.format(rewards.mean()))
+    print('std: {:.4f}'.format(rewards.std()))
+    print('max: {:.4f}'.format(rewards.max()))
+    print('min: {:.4f}'.format(rewards.min()))
 
-    if reward_pen:
-        rewards = np.where(rewards > 30, rewards-50, rewards)
-        rewards = np.where(rewards > 5, rewards-10, rewards)
-    else:
-        if normalize_mean:
-            rewards -= rewards.mean()
+    if normalize_mean:
+        rewards -= rewards.mean()
 
-        if add_bias:
-            rewards += bias
-
-        if normalize_std:
-            rewards_mean = rewards.mean()
-            rewards = (rewards -
-                    rewards_mean) / rewards.std() * std_scaler + rewards_mean
-
-        if mult_scale:
-            rewards *= scaler
+    if normalize_std:
+        rewards_mean = rewards.mean()
+        rewards = (rewards - rewards_mean) / rewards.std() + rewards_mean
 
     print("\nRewards stats after preprocessing")
-    print('mean:', rewards.mean())
-    print('std:', rewards.std())
-    print('max:', rewards.max())
-    print('min:', rewards.min())
+    print('mean: {:.4f}'.format(rewards.mean()))
+    print('std: {:.4f}'.format(rewards.std()))
+    print('max: {:.4f}'.format(rewards.max()))
+    print('min: {:.4f}'.format(rewards.min()))
 
     terminals = np.expand_dims(np.squeeze(refined_dataset['terminals']), 1)
     dataset_size = observations.shape[0]
-    '''
-    for i in range(len(observations)):
-        replay_buffer.add_sample(
-            observations[i],
-            actions[i],
-            rewards[i],
-            terminals[i],
-            next_obs[i],
-        )
-    '''
+    
     replay_buffer._observations = observations
     replay_buffer._next_obs = next_obs
     replay_buffer._actions = actions

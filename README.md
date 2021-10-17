@@ -26,10 +26,6 @@ If you find this repository useful for your research, please cite:
 * CUDA
 * numpy
 
-## Dataset preperation
-
-To be updated
-
 ## Reproducing the results
 
 To reproduce SAC-N results in MuJoCo Gym, run:

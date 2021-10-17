@@ -43,7 +43,7 @@ python run_scripts/sac.py --env_name [ENVIRONMENT] --num_qs [N] --eta [ETA]
 On Adroit tasks, we apply reward normalization for further training stability. For example, to reproduce the EDAC results for pen-human, run:
 
 ```bash
-python run_scripts/sac.py --env_name pen-human-v1 --num_qs 20 --plr 3e-5 --eta 1000 --reward_mean --reward_std 1.0
+python run_scripts/sac.py --env_name pen-human-v1 --epoch 200 --num_qs 20 --plr 3e-5 --eta 1000 --reward_mean --reward_std
 ```
 
 

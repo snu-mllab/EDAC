@@ -26,6 +26,12 @@ If you find this repository useful for your research, please cite:
 * CUDA
 * numpy
 
+You should install ```lifelong_rl``` as a python package by running
+
+```bash 
+pip install -e .
+```
+
 ## Reproducing the results
 
 ### Gym

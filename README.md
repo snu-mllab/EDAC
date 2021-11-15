@@ -1,6 +1,6 @@
 # Uncertainty-Based Offline Reinforcement Learning with Diversified Q-Ensemble
 
-This is the code for reproducing the results of the paper "Uncertainty-Based Offline Reinforcement Learning with Diversified Q-Ensemble" accepted at NeurIPS'2021.
+This is the code for reproducing the results of the paper [Uncertainty-Based Offline Reinforcement Learning with Diversified Q-Ensemble](https://arxiv.org/abs/2110.01548) accepted at NeurIPS'2021.
 
 This code builds up from the offical code of [Reset-Free Lifelong Learning with Skill-Space Planning](https://sites.google.com/berkeley.edu/reset-free-lifelong-learning), originally derived from [rlkit](https://github.com/vitchyr/rlkit). 
 
@@ -58,6 +58,9 @@ To reproduce the EDAC results for pen-cloned, run:
 python scripts/sac.py --env_name pen-human-v1 --epoch 200 --num_qs 20 --plr 3e-5 --eta 10 --max_q_backup --reward_mean --reward_std
 ```
 
+## Acknowledgement
+
+This work was supported by Institute for Information & communications Technology Promotion(IITP) grant funded by the Korea government(MSIT) (No.2019-0-01371, Development of brain-inspired AI with human-like intelligence).
 
 ## License
 

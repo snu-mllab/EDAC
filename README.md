@@ -1,5 +1,8 @@
 # Uncertainty-Based Offline Reinforcement Learning with Diversified Q-Ensemble
 
+[![DOI](https://zenodo.org/badge/415660116.svg)](https://zenodo.org/badge/latestdoi/415660116)
+
+
 This is the code for reproducing the results of the paper [Uncertainty-Based Offline Reinforcement Learning with Diversified Q-Ensemble](https://arxiv.org/abs/2110.01548) accepted at NeurIPS'2021.
 
 This code builds up from the offical code of [Reset-Free Lifelong Learning with Skill-Space Planning](https://sites.google.com/berkeley.edu/reset-free-lifelong-learning), originally derived from [rlkit](https://github.com/vitchyr/rlkit). 

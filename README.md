@@ -1,6 +1,6 @@
 # Uncertainty-Based Offline Reinforcement Learning with Diversified Q-Ensemble
 
-[![DOI](https://zenodo.org/badge/415660116.svg)](https://zenodo.org/badge/latestdoi/415660116)
+[![DOI](https://zenodo.org/badge/415660116.svg)](https://zenodo.org/badge/latestdoi/415660116) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
 This is the code for reproducing the results of the paper [Uncertainty-Based Offline Reinforcement Learning with Diversified Q-Ensemble](https://arxiv.org/abs/2110.01548) accepted at NeurIPS'2021.
@@ -64,7 +64,3 @@ python scripts/sac.py --env_name pen-human-v1 --epoch 200 --num_qs 20 --plr 3e-5
 ## Acknowledgement
 
 This work was supported by Institute for Information & communications Technology Promotion(IITP) grant funded by the Korea government(MSIT) (No.2019-0-01371, Development of brain-inspired AI with human-like intelligence).
-
-## License
-
-MIT License

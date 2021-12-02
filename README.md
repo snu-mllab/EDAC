@@ -21,15 +21,9 @@ If you find this repository useful for your research, please cite:
 
 ## Requirements
 
-* python (3.7.4)
-* pytorch (1.7.1)
-* gym
-* mujoco-py
-* d4rl
-* CUDA
-* numpy
+The control environments used in this paper require MuJoCo engine, which can be downloaded from [here](https://mujoco.org/download).
 
-To install all the packages required, run the following commands:
+All Python packages required are listed in `requirements.txt`. To install these packages, run the following commands:  
 
 ```bash
 conda create -n edac python=3.7
@@ -38,6 +32,8 @@ conda activate edac
 cd EDAC
 pip install -r requirements.txt
 ```
+
+Note: 
 
 ## Reproducing the results
 

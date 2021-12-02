@@ -21,7 +21,7 @@ If you find this repository useful for your research, please cite:
 
 ## Requirements
 
-The control environments used in this paper require MuJoCo engine, which can be downloaded from [here](https://mujoco.org/download).
+The control environments used in this paper require MuJoCo engine, which can be downloaded from [here](https://mujoco.org/download). The latest version is 2.1.0.
 
 All Python packages required are listed in `requirements.txt`. To install these packages, run the following commands:  
 
@@ -33,9 +33,14 @@ cd EDAC
 pip install -r requirements.txt
 ```
 
-Note: For those who have installed earlier version of MuJoCo (<= 2.0), an error will occur when trying to install mujoco_py and dm_control. To resolve this, you should manually specify the versions as `dm_control==0.0.364896371` and `mujoco-py<2.1,>=2.0`. Also,  
-
+Note: For those who have installed MuJoCo 2.0, an error will occur when trying to install mujoco_py and dm_control. To resolve this, you should manually specify the versions as `dm_control==0.0.364896371` and `mujoco-py<2.1,>=2.0`. Also, you should manually install d4rl package as
+  
 ```bash
+git clone https://github.com/rail-berkeley/d4rl.git
+cd d4rl
+
+# Remove lines including 'dm_control' in setup.py
+pip install -e .
 ```
 
 

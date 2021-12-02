@@ -1,9 +1,10 @@
 absl-py
-dm_control==0.0.364896371
+d4rl
+dm_control
 gtimer
 gym
 matplotlib
-mujoco-py<2.1,>=2.0
+mujoco-py
 opencv-python
 python-dateutil
 tensorboardX

@@ -1,0 +1,11 @@
+absl-py
+git+https://github.com/rail-berkeley/d4rl@master#egg=d4rl
+gtimer
+gym
+matplotlib
+mujoco-py
+opencv-python
+python-dateutil
+tensorboardX
+torch==1.7.1
+

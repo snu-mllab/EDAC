@@ -33,11 +33,15 @@ cd EDAC
 pip install -r requirements.txt
 ```
 
-Note: For those who have installed MuJoCo 2.0, an error will occur when trying to install mujoco_py and dm_control. To resolve this, you should manually specify the versions as `dm_control==0.0.364896371` and `mujoco-py<2.1,>=2.0` in `setup.py`. Also, you should manually install d4rl package as
+Note: For those who have installed MuJoCo 2.0, an error will occur when trying to install mujoco_py and dm_control. To resolve this, you should manually specify versions as `mujoco-py<2.1,>=2.0` and `dm_control==0.0.364896371` in `setup.py` and you should manually install d4rl package as follows:
   
 ```bash
+conda create -n edac python=3.7
+conda activate edac
+
 cd EDAC
-# Remove d4rl in setup.py
+# Specify versions of mujoco-py and dm_control and remove d4rl in setup.py
+pip install -r requirements.txt
 
 cd .
 git clone https://github.com/rail-berkeley/d4rl.git
@@ -46,7 +50,6 @@ cd d4rl
 # Remove lines including 'dm_control' in setup.py
 pip install -e .
 ```
-
 
 ## Reproducing the results
 

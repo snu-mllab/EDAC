@@ -21,7 +21,7 @@ If you find this repository useful for your research, please cite:
 
 ## Requirements
 
-The control environments used in this paper require MuJoCo engine, which can be downloaded from [here](https://mujoco.org/download). The latest version is 2.1.0.
+The environments used in this paper require MuJoCo engine, which can be downloaded from [here](https://mujoco.org/download). The latest version is 2.1.0.
 
 All Python packages required are listed in `requirements.txt`. To install these packages, run the following commands:  
 

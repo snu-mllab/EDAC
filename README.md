@@ -83,4 +83,10 @@ python scripts/sac.py --env_name pen-human-v1 --epoch 200 --num_qs 20 --plr 3e-5
 
 ## Acknowledgement
 
-This work was supported by Institute for Information & communications Technology Promotion(IITP) grant funded by the Korea government(MSIT) (No.2019-0-01371, Development of brain-inspired AI with human-like intelligence).
+This work was supported in part by Samsung Advanced Institute of Technology, Samsung Electronics
+Co., Ltd., Institute of Information & Communications Technology Planning & Evaluation (IITP) grant
+funded by the Korea government (MSIT) (No. 2020-0-00882, (SW STAR LAB) Development of
+deployable learning intelligence via self-sustainable and trustworthy machine learning and No. 2019-
+0-01371, Development of brain-inspired AI with human-like intelligence), and Research Resettlement
+Fund for the new faculty of Seoul National University. This material is based upon work supported
+by the Air Force Office of Scientific Research under award number FA2386-20-1-4043.

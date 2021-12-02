@@ -1,9 +1,9 @@
 absl-py
-git+https://github.com/rail-berkeley/d4rl@master#egg=d4rl
+dm_control==0.0.364896371
 gtimer
 gym
 matplotlib
-mujoco-py
+mujoco-py<2.1,>=2.0
 opencv-python
 python-dateutil
 tensorboardX

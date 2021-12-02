@@ -33,7 +33,11 @@ cd EDAC
 pip install -r requirements.txt
 ```
 
-Note: 
+Note: For those who have installed earlier version of MuJoCo (<= 2.0), an error will occur when trying to install mujoco_py and dm_control. To resolve this, you should manually specify the versions as `dm_control==0.0.364896371` and `mujoco-py<2.1,>=2.0`. Also,  
+
+```bash
+```
+
 
 ## Reproducing the results
 

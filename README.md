@@ -39,6 +39,7 @@ Note: For those who have installed MuJoCo 2.0, an error will occur when trying t
 cd EDAC
 # Remove d4rl in setup.py
 
+cd .
 git clone https://github.com/rail-berkeley/d4rl.git
 cd d4rl
 

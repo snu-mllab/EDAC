@@ -29,7 +29,15 @@ If you find this repository useful for your research, please cite:
 * CUDA
 * numpy
 
-You can install ```lifelong_rl``` as a Python package by running ```pip install -e .```.
+To install all the packages required, run the following commands:
+
+```bash
+conda create -n edac python=3.7
+conda activate edac
+
+cd EDAC
+pip install -r requirements.txt
+```
 
 ## Reproducing the results
 

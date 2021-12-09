@@ -36,7 +36,7 @@ Note: For those who have installed MuJoCo 2.0, an error will occur when trying t
 ```bash
 conda create -n edac python=3.7
 conda activate edac
-# Specify versions of mujoco-py and dm_control and remove d4rl in setup.py
+# Specify versions of mujoco-py and dm_control and remove d4rl from setup.py
 pip install -r requirements.txt
 
 cd .

@@ -28,8 +28,6 @@ All Python packages required are listed in `requirements.txt`. To install these 
 ```bash
 conda create -n edac python=3.7
 conda activate edac
-
-cd EDAC
 pip install -r requirements.txt
 ```
 

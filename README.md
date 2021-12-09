@@ -41,8 +41,8 @@ pip install -r requirements.txt
 
 cd .
 git clone https://github.com/rail-berkeley/d4rl.git
-cd d4rl
 
+cd d4rl
 # Remove lines including 'dm_control' in setup.py
 pip install -e .
 ```

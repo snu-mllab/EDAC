@@ -1,4 +1,4 @@
-# Uncertainty-Based Offline Reinforcement Learning with Diversified Q-Ensembl
+# Uncertainty-Based Offline Reinforcement Learning with Diversified Q-Ensemble
 
 [![DOI](https://zenodo.org/badge/415660116.svg)](https://zenodo.org/badge/latestdoi/415660116) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/snu-mllab/EDAC/blob/main/LICENSE)
 

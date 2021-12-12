@@ -1,5 +1,5 @@
 absl-py
-d4rl
+git+https://github.com/rail-berkeley/d4rl@master#egg=d4rl
 dm_control
 gtimer
 gym

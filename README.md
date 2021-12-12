@@ -28,7 +28,7 @@ All Python packages required are listed in `requirements.txt`. To install these 
 ```bash
 conda create -n edac python=3.7
 conda activate edac
-pip install -r requirements.txt
+pip install --no-cache-dir -r requirements.txt
 ```
 
 Note: For those who have installed MuJoCo 2.0, an error will occur when trying to install mujoco_py and dm_control. To resolve this, you should specify versions as `mujoco-py<2.1,>=2.0` and `dm_control==0.0.364896371` in `setup.py` and manually install the d4rl package as below:
@@ -37,7 +37,7 @@ Note: For those who have installed MuJoCo 2.0, an error will occur when trying t
 conda create -n edac python=3.7
 conda activate edac
 # Specify versions of mujoco-py and dm_control and remove d4rl from setup.py
-pip install -r requirements.txt
+pip install --no-cache-dir -r requirements.txt
 
 cd .
 git clone https://github.com/rail-berkeley/d4rl.git

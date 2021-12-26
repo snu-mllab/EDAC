@@ -30,7 +30,7 @@ All Python packages required, except for `d4rl`, are listed in `requirements.txt
 
 After installing these packages, you manually download and install `d4rl` package from [here](https://github.com/rail-berkeley/d4rl). Note that you should remove lines including `dm_control` in `setup.py`.
 
-Here is an example of how to install the requirements.  
+Here is an example of how to install these requirements.  
   
 ```bash
 conda create -n edac python=3.7

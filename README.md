@@ -21,16 +21,18 @@ If you find this repository useful for your research, please cite:
 
 ## Requirements
 
-The environments used in this paper require MuJoCo engine, which can be downloaded from [here](https://mujoco.org/download).
+To install all the required dependencies:
 
-All Python packages required, except for `d4rl`, are listed in `requirements.txt`. You should specify the versions of `mujoco_py` and `dm_control` in the file depending on the version of MuJoCo engine you have installed as follows:
-- MuJoCo 2.0: `mujoco-py<2.1,>=2.0`, `dm_control==0.0.364896371`
-- MuJoCo 2.1.0: `mujoco-py<2.2,>=2.1`, `dm_control==0.0.403778684`
-- MuJoCo 2.1.1: to be updated
+1. Install MuJoCo engine, which can be downloaded from [here](https://mujoco.org/download).
 
-After installing these packages, you manually download and install `d4rl` package from [here](https://github.com/rail-berkeley/d4rl). Note that you should remove lines including `dm_control` in `setup.py`.
+2. Install Python packages listned in `requirements.txt` using `pip`. You should specify the versions of `mujoco_py` and `dm_control` in `requirements.txt` depending on the version of MuJoCo engine you have installed as follows:
+    - MuJoCo 2.0: `mujoco-py<2.1,>=2.0`, `dm_control==0.0.364896371`
+    - MuJoCo 2.1.0: `mujoco-py<2.2,>=2.1`, `dm_control==0.0.403778684`
+    - MuJoCo 2.1.1: to be updated
 
-Here is an example of how to install these requirements.  
+3. Manually download and install `d4rl` package from [here](https://github.com/rail-berkeley/d4rl). You should remove lines including `dm_control` in `setup.py`.
+
+Here is an example of how to install all the dependencies on Ubuntu:
   
 ```bash
 conda create -n edac python=3.7

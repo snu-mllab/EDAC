@@ -25,7 +25,7 @@ To install all the required dependencies:
 
 1. Install MuJoCo engine, which can be downloaded from [here](https://mujoco.org/download).
 
-2. Install Python packages listned in `requirements.txt` using `pip`. You should specify the versions of `mujoco_py` and `dm_control` in `requirements.txt` depending on the version of MuJoCo engine you have installed as follows:
+2. Install Python packages listed in `requirements.txt` using `pip`. You should specify the versions of `mujoco_py` and `dm_control` in `requirements.txt` depending on the version of MuJoCo engine you have installed as follows:
     - MuJoCo 2.0: `mujoco-py<2.1,>=2.0`, `dm_control==0.0.364896371`
     - MuJoCo 2.1.0: `mujoco-py<2.2,>=2.1`, `dm_control==0.0.403778684`
     - MuJoCo 2.1.1: to be updated

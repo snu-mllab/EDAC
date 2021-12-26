@@ -21,22 +21,21 @@ If you find this repository useful for your research, please cite:
 
 ## Requirements
 
-The environments used in this paper require MuJoCo engine, which can be downloaded from [here](https://mujoco.org/download). The latest version is 2.1.0.
+The environments used in this paper require MuJoCo engine, which can be downloaded from [here](https://mujoco.org/download).
 
-All Python packages required are listed in `requirements.txt`. To install these packages, run the following commands:  
+All Python packages required, except for `d4rl`, are listed in `requirements.txt`. You should specify the versions of `mujoco_py` and `dm_control` in the file depending on the version of MuJoCo engine you have installed as follows:
+- MuJoCo 2.0: `mujoco-py<2.1,>=2.0`, `dm_control==0.0.364896371`
+- MuJoCo 2.1.0: `mujoco-py<2.2,>=2.1`, `dm_control==0.0.403778684`
+- MuJoCo 2.1.1: to be updated
 
-```bash
-conda create -n edac python=3.7
-conda activate edac
-pip install --no-cache-dir -r requirements.txt
-```
+After installing these packages, you manually download and install `d4rl` package from [here](https://github.com/rail-berkeley/d4rl). Note that you should remove lines including `dm_control` in `setup.py`.
 
-Note: For those who have installed MuJoCo 2.0, an error will occur when trying to install mujoco_py and dm_control. To resolve this, you should specify versions as `mujoco-py<2.1,>=2.0` and `dm_control==0.0.364896371` in `setup.py` and manually install the d4rl package as below:
+Here is an example of how to install the requirements.  
   
 ```bash
 conda create -n edac python=3.7
 conda activate edac
-# Specify versions of mujoco-py and dm_control and remove d4rl from setup.py
+# Specify versions of mujoco-py and dm_control in requirements.txt
 pip install --no-cache-dir -r requirements.txt
 
 cd .
